@@ -71,24 +71,10 @@ void CCrazyflieSensing::ControlStep() {
       m_cInitialPosition = m_pcPos->GetReading().Position;
    } 
    else if ((m_uiCurrentStep - nInitSteps) < nTotalSteps) {
-      // Square pattern
-      CVector3 trans(0.0f, 0.0f, 0.0f);
-      if ( (m_uiCurrentStep - nInitSteps) < nTotalSteps/4 ) {
-         trans.SetX(1.0f);
+      if (m_uiCurrentStep == 100)
+      {
+         m_pcPropellers->SetRelativeYaw(CRadians::PI / 20);
       }
-      else if ( (m_uiCurrentStep - nInitSteps) < 2*nTotalSteps/4 ) {
-         trans.SetY(1.0f);
-      }
-      else if ( (m_uiCurrentStep - nInitSteps) < 3*nTotalSteps/4 ) {
-         trans.SetX(-1.0f);
-      }
-      else {
-         trans.SetY(-1.0f);
-      }
-      CVector3 currentPosition = m_pcPos->GetReading().Position;
-      CVector3 relativePositionCommand = (m_cInitialPosition + trans) - currentPosition; 
-      
-      m_pcPropellers->SetRelativePosition(relativePositionCommand);
    }
    else {
       Land();
